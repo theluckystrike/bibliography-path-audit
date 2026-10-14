@@ -1,0 +1,69 @@
+[
+  {
+    "feature": "local-fields",
+    "caption": "Check one local profile and skip remote source values.",
+    "note": "Research audit.md",
+    "eval": "(async () => { app.setting.close(); app.plugins.plugins['bibliography-path-audit'].closeAudits(); const a=app.vault.adapter; const root=app.vault.configDir+'/plugins/citation-extended'; if (!await a.exists(root)) await a.mkdir(root); await a.write(root+'/data.json', JSON.stringify({\"databases\": [{\"path\": \"Bibliography Path Audit/Refs/library.bib\", \"type\": \"biblatex\", \"sourceType\": \"vault-file\"}, {\"path\": \"Bibliography Path Audit/Refs/library.json\", \"type\": \"csl-json\", \"sourceType\": \"local-file\"}, {\"path\": \"demo-value-withheld\", \"type\": \"readwise\", \"sourceType\": \"readwise\"}, {\"path\": \"http://127.0.0.1:23119/export\", \"type\": \"csl-json\", \"sourceType\": \"zotero\"}]})); const m=app.plugins.plugins['bibliography-path-audit'].openAudit(); m.schema='citation-extended'; m.contentEl.querySelector('#bpa-schema').value='citation-extended'; await m.loadProfiles(); await m.run(); return m.contentEl.innerText; })()",
+    "wait": 400,
+    "after": "app.plugins.plugins['bibliography-path-audit'].closeAudits(); 'ok'"
+  },
+  {
+    "feature": "path-faults",
+    "caption": "Show a trailing space and a trimmed local path.",
+    "note": "Research audit.md",
+    "eval": "(async () => { app.setting.close(); app.plugins.plugins['bibliography-path-audit'].closeAudits(); const a=app.vault.adapter; const root=app.vault.configDir+'/plugins/obsidian-citation-plugin'; if (!await a.exists(root)) await a.mkdir(root); await a.write(root+'/data.json', JSON.stringify({\"citationExportPath\": \"Bibliography Path Audit/Refs/library.bib \", \"citationExportFormat\": \"biblatex\"})); const m=app.plugins.plugins['bibliography-path-audit'].openAudit(); m.schema='obsidian-citation-plugin'; m.contentEl.querySelector('#bpa-schema').value='obsidian-citation-plugin'; await m.loadProfiles(); await m.run(); return m.contentEl.innerText; })()",
+    "wait": 400,
+    "after": "app.plugins.plugins['bibliography-path-audit'].closeAudits(); 'ok'"
+  },
+  {
+    "feature": "format-sample",
+    "caption": "Check the local file and its BibTeX sample.",
+    "note": "Research audit.md",
+    "eval": "(async () => { app.setting.close(); app.plugins.plugins['bibliography-path-audit'].closeAudits(); const a=app.vault.adapter; const root=app.vault.configDir+'/plugins/obsidian-citation-plugin'; if (!await a.exists(root)) await a.mkdir(root); await a.write(root+'/data.json', JSON.stringify({\"citationExportPath\": \"Bibliography Path Audit/Refs/library.bib\", \"citationExportFormat\": \"biblatex\"})); const m=app.plugins.plugins['bibliography-path-audit'].openAudit(); m.schema='obsidian-citation-plugin'; m.contentEl.querySelector('#bpa-schema').value='obsidian-citation-plugin'; await m.loadProfiles(); await m.run(); return m.contentEl.innerText; })()",
+    "wait": 400,
+    "after": "app.plugins.plugins['bibliography-path-audit'].closeAudits(); 'ok'"
+  },
+  {
+    "feature": "local-matches",
+    "caption": "Offer a hidden Markdown file beside a missing bibliography.",
+    "note": "Research audit.md",
+    "eval": "(async () => { app.setting.close(); app.plugins.plugins['bibliography-path-audit'].closeAudits(); const a=app.vault.adapter; const root=app.vault.configDir+'/plugins/obsidian-citation-plugin'; if (!await a.exists(root)) await a.mkdir(root); await a.write(root+'/data.json', JSON.stringify({\"citationExportPath\": \"Bibliography Path Audit/Refs/hidden.bib\", \"citationExportFormat\": \"biblatex\"})); await a.write('Bibliography Path Audit/Refs/hidden.bib.md','@article{hidden, title={A sample}}'); const m=app.plugins.plugins['bibliography-path-audit'].openAudit(); m.schema='obsidian-citation-plugin'; m.contentEl.querySelector('#bpa-schema').value='obsidian-citation-plugin'; await m.loadProfiles(); await m.run(); return m.contentEl.innerText; })()",
+    "wait": 400,
+    "after": "app.plugins.plugins['bibliography-path-audit'].closeAudits(); 'ok'"
+  },
+  {
+    "feature": "external-paths",
+    "caption": "Label the desktop path as outside the vault and unchecked.",
+    "note": "Research audit.md",
+    "eval": "(async () => { app.setting.close(); app.plugins.plugins['bibliography-path-audit'].closeAudits(); const a=app.vault.adapter; const root=app.vault.configDir+'/plugins/obsidian-citation-plugin'; if (!await a.exists(root)) await a.mkdir(root); await a.write(root+'/data.json', JSON.stringify({\"citationExportPath\": \"/Users/other/library.bib\", \"citationExportFormat\": \"biblatex\"})); const m=app.plugins.plugins['bibliography-path-audit'].openAudit(); m.schema='obsidian-citation-plugin'; m.contentEl.querySelector('#bpa-schema').value='obsidian-citation-plugin'; await m.loadProfiles(); await m.run(); return m.contentEl.innerText; })()",
+    "wait": 400,
+    "after": "app.plugins.plugins['bibliography-path-audit'].closeAudits(); 'ok'"
+  },
+  {
+    "feature": "settings",
+    "caption": "The free scope and planned Pro account controls.",
+    "note": "Research audit.md",
+    "eval": "app.setting.open(); app.setting.openTabById('bibliography-path-audit'); 'ok'",
+    "wait": 500,
+    "after": "app.setting.close(); 'ok'"
+  },
+  {
+    "feature": "audit",
+    "caption": "Review a valid path, spaces, and a format mismatch.",
+    "frames": [
+      {
+        "note": "Research audit.md",
+        "eval": "(async () => { app.setting.close(); app.plugins.plugins['bibliography-path-audit'].closeAudits(); const a=app.vault.adapter; const root=app.vault.configDir+'/plugins/obsidian-citation-plugin'; if (!await a.exists(root)) await a.mkdir(root); await a.write(root+'/data.json', JSON.stringify({\"citationExportPath\": \"Bibliography Path Audit/Refs/library.bib\", \"citationExportFormat\": \"biblatex\"})); const m=app.plugins.plugins['bibliography-path-audit'].openAudit(); m.schema='obsidian-citation-plugin'; m.contentEl.querySelector('#bpa-schema').value='obsidian-citation-plugin'; await m.loadProfiles(); await m.run(); return m.contentEl.innerText; })()",
+        "hold": 1500
+      },
+      {
+        "eval": "(async () => { app.setting.close(); app.plugins.plugins['bibliography-path-audit'].closeAudits(); const a=app.vault.adapter; const root=app.vault.configDir+'/plugins/obsidian-citation-plugin'; if (!await a.exists(root)) await a.mkdir(root); await a.write(root+'/data.json', JSON.stringify({\"citationExportPath\": \"Bibliography Path Audit/Refs/library.bib \", \"citationExportFormat\": \"biblatex\"})); const m=app.plugins.plugins['bibliography-path-audit'].openAudit(); m.schema='obsidian-citation-plugin'; m.contentEl.querySelector('#bpa-schema').value='obsidian-citation-plugin'; await m.loadProfiles(); await m.run(); return m.contentEl.innerText; })()",
+        "hold": 1500
+      },
+      {
+        "eval": "(async () => { app.setting.close(); app.plugins.plugins['bibliography-path-audit'].closeAudits(); const a=app.vault.adapter; const root=app.vault.configDir+'/plugins/obsidian-citation-plugin'; if (!await a.exists(root)) await a.mkdir(root); await a.write(root+'/data.json', JSON.stringify({\"citationExportPath\": \"Bibliography Path Audit/Refs/library.bib\", \"citationExportFormat\": \"csl-json\"})); const m=app.plugins.plugins['bibliography-path-audit'].openAudit(); m.schema='obsidian-citation-plugin'; m.contentEl.querySelector('#bpa-schema').value='obsidian-citation-plugin'; await m.loadProfiles(); await m.run(); return m.contentEl.innerText; })()",
+        "hold": 1700
+      }
+    ]
+  }
+]

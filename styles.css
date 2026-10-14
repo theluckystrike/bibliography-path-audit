@@ -1,0 +1,42 @@
+.bpa-modal {
+	width: min(680px, 95vw);
+}
+
+.bpa-modal .bpa-label {
+	display: block;
+	margin-bottom: var(--size-4-2);
+	font-weight: var(--font-semibold);
+}
+
+.bpa-modal select {
+	width: 100%;
+	margin-bottom: var(--size-4-2);
+}
+
+.bpa-modal .bpa-results {
+	margin-top: var(--size-4-4);
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+.bpa-modal .bpa-original {
+	display: block;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	padding: var(--size-4-2);
+	background: var(--background-secondary);
+}
+
+.bpa-modal .bpa-candidate {
+	width: 100%;
+	font-family: var(--font-monospace);
+}
+
+.bpa-modal .bpa-limit {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+}
+
+.bpa-modal .bpa-sample {
+	color: var(--text-accent);
+	font-weight: var(--font-semibold);
+}

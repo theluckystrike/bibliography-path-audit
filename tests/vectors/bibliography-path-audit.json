@@ -1,0 +1,806 @@
+{
+ "slug": "bibliography-path-audit",
+ "module": "products/bibliography-path-audit/src/audit.ts",
+ "function": "extractSettings",
+ "cases": [
+  {
+   "name": "Citations local BibTeX field",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{\"citationExportPath\": \"Refs/library.bib\", \"citationExportFormat\": \"biblatex\"}"
+   ],
+   "expected": {
+    "status": "supported",
+    "profiles": [
+     {
+      "id": "Citations",
+      "path": "Refs/library.bib",
+      "format": "biblatex"
+     }
+    ],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Trailing space is preserved for diagnosis",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{\"citationExportPath\": \"Refs/library.bib \", \"citationExportFormat\": \"biblatex\"}"
+   ],
+   "expected": {
+    "status": "supported",
+    "profiles": [
+     {
+      "id": "Citations",
+      "path": "Refs/library.bib ",
+      "format": "biblatex"
+     }
+    ],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Initial slash is preserved",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{\"citationExportPath\": \"/Refs/library.bib\", \"citationExportFormat\": \"biblatex\"}"
+   ],
+   "expected": {
+    "status": "supported",
+    "profiles": [
+     {
+      "id": "Citations",
+      "path": "/Refs/library.bib",
+      "format": "biblatex"
+     }
+    ],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Hidden suffix is preserved",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{\"citationExportPath\": \"Refs/library.bib.md\", \"citationExportFormat\": \"biblatex\"}"
+   ],
+   "expected": {
+    "status": "supported",
+    "profiles": [
+     {
+      "id": "Citations",
+      "path": "Refs/library.bib.md",
+      "format": "biblatex"
+     }
+    ],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "CSL JSON local field",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{\"citationExportPath\": \"Refs/library.json\", \"citationExportFormat\": \"csl-json\"}"
+   ],
+   "expected": {
+    "status": "supported",
+    "profiles": [
+     {
+      "id": "Citations",
+      "path": "Refs/library.json",
+      "format": "csl-json"
+     }
+    ],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Invalid JSON",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{"
+   ],
+   "expected": {
+    "status": "unsupported",
+    "profiles": [],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Unknown schema fields",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{}"
+   ],
+   "expected": {
+    "status": "unsupported",
+    "profiles": [],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Wrong format",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{\"citationExportPath\": \"Refs/library.bib\", \"citationExportFormat\": \"hayagriva\"}"
+   ],
+   "expected": {
+    "status": "unsupported",
+    "profiles": [],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Wrong path type",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{\"citationExportPath\": 7, \"citationExportFormat\": \"biblatex\"}"
+   ],
+   "expected": {
+    "status": "unsupported",
+    "profiles": [],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Array schema",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "[]"
+   ],
+   "expected": {
+    "status": "unsupported",
+    "profiles": [],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Unknown plugin schema",
+   "function": "extractSettings",
+   "args": [
+    "unknown",
+    "{\"citationExportPath\": \"Refs/library.bib\", \"citationExportFormat\": \"biblatex\"}"
+   ],
+   "expected": {
+    "status": "unsupported",
+    "profiles": [],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Remote URL is withheld",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{\"citationExportPath\": \"https://example.invalid/library.bib\", \"citationExportFormat\": \"biblatex\"}"
+   ],
+   "expected": {
+    "status": "supported",
+    "profiles": [],
+    "skipped": 1
+   }
+  },
+  {
+   "name": "Credential shaped path is withheld",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{\"citationExportPath\": \"ghp_private-token.bib\", \"citationExportFormat\": \"biblatex\"}"
+   ],
+   "expected": {
+    "status": "supported",
+    "profiles": [],
+    "skipped": 1
+   }
+  },
+  {
+   "name": "Unrelated secret is omitted",
+   "function": "extractSettings",
+   "args": [
+    "obsidian-citation-plugin",
+    "{\"citationExportPath\": \"Refs/library.bib\", \"citationExportFormat\": \"biblatex\", \"readwiseToken\": \"credential-value\"}"
+   ],
+   "expected": {
+    "status": "supported",
+    "profiles": [
+     {
+      "id": "Citations",
+      "path": "Refs/library.bib",
+      "format": "biblatex"
+     }
+    ],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Explicit local source and remote secrets",
+   "function": "extractSettings",
+   "args": [
+    "citation-extended",
+    "{\"databases\": [{\"path\": \"Refs/library.bib\", \"type\": \"biblatex\", \"sourceType\": \"local-file\"}, {\"path\": \"private-readwise-token\", \"type\": \"readwise\", \"sourceType\": \"readwise\"}, {\"path\": \"http://127.0.0.1:23119/export\", \"type\": \"csl-json\", \"sourceType\": \"zotero\"}]}"
+   ],
+   "expected": {
+    "status": "supported",
+    "profiles": [
+     {
+      "id": "Database 1",
+      "path": "Refs/library.bib",
+      "format": "biblatex"
+     }
+    ],
+    "skipped": 2
+   }
+  },
+  {
+   "name": "Missing source type is withheld",
+   "function": "extractSettings",
+   "args": [
+    "citation-extended",
+    "{\"databases\": [{\"path\": \"private-token\", \"type\": \"biblatex\"}]}"
+   ],
+   "expected": {
+    "status": "supported",
+    "profiles": [],
+    "skipped": 1
+   }
+  },
+  {
+   "name": "Vault file source",
+   "function": "extractSettings",
+   "args": [
+    "citation-extended",
+    "{\"databases\": [{\"path\": \"Refs/library.json\", \"type\": \"csl-json\", \"sourceType\": \"vault-file\"}]}"
+   ],
+   "expected": {
+    "status": "supported",
+    "profiles": [
+     {
+      "id": "Database 1",
+      "path": "Refs/library.json",
+      "format": "csl-json"
+     }
+    ],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Unknown Extended schema",
+   "function": "extractSettings",
+   "args": [
+    "citation-extended",
+    "{\"sources\":[]}"
+   ],
+   "expected": {
+    "status": "unsupported",
+    "profiles": [],
+    "skipped": 0
+   }
+  },
+  {
+   "name": "Plain local path",
+   "function": "inspectPath",
+   "args": [
+    "Refs/library.bib"
+   ],
+   "expected": {
+    "kind": "local",
+    "candidate": "Refs/library.bib",
+    "messages": []
+   }
+  },
+  {
+   "name": "Visible edge spaces",
+   "function": "inspectPath",
+   "args": [
+    " Refs/library.bib "
+   ],
+   "expected": {
+    "kind": "local",
+    "candidate": "Refs/library.bib",
+    "messages": [
+     "Leading or trailing spaces"
+    ]
+   }
+  },
+  {
+   "name": "Vault relative slash candidate",
+   "function": "inspectPath",
+   "args": [
+    "/Refs/library.bib"
+   ],
+   "expected": {
+    "kind": "local",
+    "candidate": "Refs/library.bib",
+    "messages": [
+     "Initial slash; only the vault-relative candidate is checked"
+    ]
+   }
+  },
+  {
+   "name": "Hidden Markdown suffix warning",
+   "function": "inspectPath",
+   "args": [
+    "Refs/library.bib.md"
+   ],
+   "expected": {
+    "kind": "local",
+    "candidate": "Refs/library.bib.md",
+    "messages": [
+     "Hidden Markdown suffix .md; file is not renamed"
+    ]
+   }
+  },
+  {
+   "name": "Mac external path",
+   "function": "inspectPath",
+   "args": [
+    "/Users/other/library.bib"
+   ],
+   "expected": {
+    "kind": "external",
+    "candidate": "",
+    "messages": [
+     "Outside the vault; unchecked on desktop and mobile"
+    ]
+   }
+  },
+  {
+   "name": "Windows external path",
+   "function": "inspectPath",
+   "args": [
+    "C:\\Refs\\library.bib"
+   ],
+   "expected": {
+    "kind": "external",
+    "candidate": "",
+    "messages": [
+     "Outside the vault; unchecked on desktop and mobile"
+    ]
+   }
+  },
+  {
+   "name": "Linux external path",
+   "function": "inspectPath",
+   "args": [
+    "/home/other/library.bib"
+   ],
+   "expected": {
+    "kind": "external",
+    "candidate": "",
+    "messages": [
+     "Outside the vault; unchecked on desktop and mobile"
+    ]
+   }
+  },
+  {
+   "name": "UNC external path",
+   "function": "inspectPath",
+   "args": [
+    "\\\\server\\Refs\\library.bib"
+   ],
+   "expected": {
+    "kind": "external",
+    "candidate": "",
+    "messages": [
+     "Outside the vault; unchecked on desktop and mobile"
+    ]
+   }
+  },
+  {
+   "name": "Traversal is rejected",
+   "function": "inspectPath",
+   "args": [
+    "../library.bib"
+   ],
+   "expected": {
+    "kind": "unsafe",
+    "candidate": "",
+    "messages": [
+     "Unsupported local path; value withheld"
+    ]
+   }
+  },
+  {
+   "name": "Hidden config path is rejected",
+   "function": "inspectPath",
+   "args": [
+    ".obsidian/private.bib"
+   ],
+   "expected": {
+    "kind": "unsafe",
+    "candidate": "",
+    "messages": [
+     "Unsupported local path; value withheld"
+    ]
+   }
+  },
+  {
+   "name": "URL is rejected",
+   "function": "inspectPath",
+   "args": [
+    "https://example.invalid/library.bib"
+   ],
+   "expected": {
+    "kind": "unsafe",
+    "candidate": "",
+    "messages": [
+     "Unsupported local path; value withheld"
+    ]
+   }
+  },
+  {
+   "name": "Backslash vault separator",
+   "function": "inspectPath",
+   "args": [
+    "Refs\\library.bib"
+   ],
+   "expected": {
+    "kind": "local",
+    "candidate": "Refs/library.bib",
+    "messages": []
+   }
+  },
+  {
+   "name": "Valid BibTeX prefix",
+   "function": "sampleFormat",
+   "args": [
+    "@article{key,",
+    "biblatex"
+   ],
+   "expected": "BibTeX sample matches"
+  },
+  {
+   "name": "CSL JSON mismatch for BibTeX",
+   "function": "sampleFormat",
+   "args": [
+    "@article{key,",
+    "csl-json"
+   ],
+   "expected": "Format mismatch: BibTeX sample, CSL JSON selected"
+  },
+  {
+   "name": "Valid CSL JSON sample",
+   "function": "sampleFormat",
+   "args": [
+    "[{\"id\":\"key\",\"type\":\"article-journal\"}]",
+    "csl-json"
+   ],
+   "expected": "CSL JSON sample matches"
+  },
+  {
+   "name": "BibTeX mismatch for JSON",
+   "function": "sampleFormat",
+   "args": [
+    "[{\"id\":\"key\",\"type\":\"book\"}]",
+    "biblatex"
+   ],
+   "expected": "Format mismatch: CSL JSON sample, BibTeX selected"
+  },
+  {
+   "name": "Empty sample cannot prove format",
+   "function": "sampleFormat",
+   "args": [
+    "",
+    "biblatex"
+   ],
+   "expected": "Sample inconclusive; full format is unchecked"
+  },
+  {
+   "name": "Incomplete JSON sample",
+   "function": "sampleFormat",
+   "args": [
+    "[{\"id\":",
+    "csl-json",
+    true
+   ],
+   "expected": "Sample incomplete; full format is unchecked"
+  },
+  {
+   "name": "BibTeX comment prefix",
+   "function": "sampleFormat",
+   "args": [
+    "% exported locally\n@book{key,",
+    "biblatex"
+   ],
+   "expected": "BibTeX sample matches"
+  },
+  {
+   "name": "File audit confirms a local BibTeX path",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "Refs/library.bib",
+     "format": "biblatex"
+    },
+    {
+     "Refs/library.bib": "@article{key,"
+    }
+   ],
+   "expected": {
+    "status": "valid",
+    "messages": [
+     "Valid local path; sample matches selected format"
+    ],
+    "original": "\"Refs/library.bib\"",
+    "candidate": "Refs/library.bib",
+    "matches": [],
+    "sample": "BibTeX sample matches"
+   }
+  },
+  {
+   "name": "File audit shows a trimmed path without a write",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "Refs/library.bib ",
+     "format": "biblatex"
+    },
+    {
+     "Refs/library.bib": "@article{key,"
+    }
+   ],
+   "expected": {
+    "status": "candidate",
+    "messages": [
+     "Leading or trailing spaces",
+     "Local candidate exists; review the findings"
+    ],
+    "original": "\"Refs/library.bib \"",
+    "candidate": "Refs/library.bib",
+    "matches": [],
+    "sample": "BibTeX sample matches"
+   }
+  },
+  {
+   "name": "File audit checks only the vault candidate for an initial slash",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "/Refs/library.bib",
+     "format": "biblatex"
+    },
+    {
+     "Refs/library.bib": "@article{key,"
+    }
+   ],
+   "expected": {
+    "status": "candidate",
+    "messages": [
+     "Initial slash; only the vault-relative candidate is checked",
+     "Local candidate exists; review the findings"
+    ],
+    "original": "\"/Refs/library.bib\"",
+    "candidate": "Refs/library.bib",
+    "matches": [],
+    "sample": "BibTeX sample matches"
+   }
+  },
+  {
+   "name": "File audit reports the hidden Markdown suffix",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "Refs/library.bib.md",
+     "format": "biblatex"
+    },
+    {
+     "Refs/library.bib.md": "@article{key,"
+    }
+   ],
+   "expected": {
+    "status": "candidate",
+    "messages": [
+     "Hidden Markdown suffix .md; file is not renamed",
+     "Local candidate exists; review the findings"
+    ],
+    "original": "\"Refs/library.bib.md\"",
+    "candidate": "Refs/library.bib.md",
+    "matches": [],
+    "sample": "BibTeX sample matches"
+   }
+  },
+  {
+   "name": "File audit detects BibTeX with CSL JSON selected",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "Refs/library.bib",
+     "format": "csl-json"
+    },
+    {
+     "Refs/library.bib": "@article{key,"
+    }
+   ],
+   "expected": {
+    "status": "mismatch",
+    "messages": [
+     "Local candidate exists; review the findings"
+    ],
+    "original": "\"Refs/library.bib\"",
+    "candidate": "Refs/library.bib",
+    "matches": [],
+    "sample": "Format mismatch: BibTeX sample, CSL JSON selected"
+   }
+  },
+  {
+   "name": "File audit leaves a desktop user path unchecked",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "/Users/other/library.bib",
+     "format": "biblatex"
+    },
+    {}
+   ],
+   "expected": {
+    "status": "external",
+    "messages": [
+     "Outside the vault; unchecked on desktop and mobile"
+    ],
+    "original": "\"/Users/other/library.bib\"",
+    "candidate": "",
+    "matches": [],
+    "sample": ""
+   }
+  },
+  {
+   "name": "File audit leaves a Windows drive unchecked",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "C:\\Refs\\library.bib",
+     "format": "biblatex"
+    },
+    {}
+   ],
+   "expected": {
+    "status": "external",
+    "messages": [
+     "Outside the vault; unchecked on desktop and mobile"
+    ],
+    "original": "\"C:\\\\Refs\\\\library.bib\"",
+    "candidate": "",
+    "matches": [],
+    "sample": ""
+   }
+  },
+  {
+   "name": "File audit offers a same-folder hidden file",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "Refs/library.bib",
+     "format": "biblatex"
+    },
+    {
+     "Refs/library.bib.md": "@article{key,"
+    }
+   ],
+   "expected": {
+    "status": "missing",
+    "messages": [
+     "Local file not found"
+    ],
+    "original": "\"Refs/library.bib\"",
+    "candidate": "Refs/library.bib",
+    "matches": [
+     "Refs/library.bib.md"
+    ],
+    "sample": ""
+   }
+  },
+  {
+   "name": "File audit confirms a local CSL JSON sample",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "Refs/library.json",
+     "format": "csl-json"
+    },
+    {
+     "Refs/library.json": "[{\"id\":\"key\",\"type\":\"book\"}]"
+    }
+   ],
+   "expected": {
+    "status": "valid",
+    "messages": [
+     "Valid local path; sample matches selected format"
+    ],
+    "original": "\"Refs/library.json\"",
+    "candidate": "Refs/library.json",
+    "matches": [],
+    "sample": "CSL JSON sample matches"
+   }
+  },
+  {
+   "name": "File audit reports an empty sample as inconclusive",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "Refs/library.bib",
+     "format": "biblatex"
+    },
+    {
+     "Refs/library.bib": ""
+    }
+   ],
+   "expected": {
+    "status": "inconclusive",
+    "messages": [
+     "Local candidate exists; review the findings"
+    ],
+    "original": "\"Refs/library.bib\"",
+    "candidate": "Refs/library.bib",
+    "matches": [],
+    "sample": "Sample inconclusive; full format is unchecked"
+   }
+  },
+  {
+   "name": "File audit detects JSON with BibTeX selected",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "Refs/library.json",
+     "format": "biblatex"
+    },
+    {
+     "Refs/library.json": "[{\"id\":\"key\",\"type\":\"book\"}]"
+    }
+   ],
+   "expected": {
+    "status": "mismatch",
+    "messages": [
+     "Local candidate exists; review the findings"
+    ],
+    "original": "\"Refs/library.json\"",
+    "candidate": "Refs/library.json",
+    "matches": [],
+    "sample": "Format mismatch: CSL JSON sample, BibTeX selected"
+   }
+  },
+  {
+   "name": "File audit normalizes a vault separator",
+   "function": "auditProfile",
+   "args": [
+    {
+     "id": "Citations",
+     "path": "Refs\\library.bib",
+     "format": "biblatex"
+    },
+    {
+     "Refs/library.bib": "@article{key,"
+    }
+   ],
+   "expected": {
+    "status": "valid",
+    "messages": [
+     "Valid local path; sample matches selected format"
+    ],
+    "original": "\"Refs\\\\library.bib\"",
+    "candidate": "Refs/library.bib",
+    "matches": [],
+    "sample": "BibTeX sample matches"
+   }
+  }
+ ]
+}
