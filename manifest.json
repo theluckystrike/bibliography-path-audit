@@ -1,7 +1,7 @@
 {
 	"id": "bibliography-path-audit",
 	"name": "Bibliography Path Audit",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"minAppVersion": "1.13.4",
 	"description": "Find invalid local bibliography paths saved in citation tool settings.",
 	"author": "Michael Lip",

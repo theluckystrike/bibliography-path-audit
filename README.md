@@ -64,7 +64,7 @@ Batch checks are planned. This version checks one selected profile per run. You 
 
 For a manual install, place main.js, manifest.json, and styles.css from one release in the bibliography-path-audit folder under your vault's plugins folder. Restart the app or reload community plugins, then enable Bibliography Path Audit. Use a matching set of release files.
 
-This source tree is prepared for community review. A directory listing depends on that review and release. The manifest records the minimum supported app version. The plugin is licensed under MIT.
+To install from the community directory, open Settings, then Community plugins, then Browse, and search for Bibliography Path Audit. The manifest records the minimum supported app version. The plugin is licensed under MIT.
 
 ## Usage
 
@@ -73,6 +73,8 @@ Open the command palette and run Bibliography Path Audit: Audit a bibliography p
 If the candidate is correct, copy it into the citation tool yourself. Run the check again after you save the citation tool's settings. Close and reopen the audit to load changed settings. An unsupported-settings message can mean that the citation tool has not saved its configuration yet.
 
 ## Settings
+
+After a minor or major update, this plugin opens one What's new tab in the background. The tab and settings card suggest other NoteMods plugins and Zovo Chat and link to notemods.com for feedback ([privacy](https://notemods.com/privacy/)). The tab sends no data. Turn the tab off in Settings.
 
 The plugin settings contain an Open audit button, the supported field scope, and planned Pro information. The audit has no saved preferences. Citation settings remain the source of the path and format. The GitHub account row has sign-in, refresh, and sign-out controls according to account state.
 

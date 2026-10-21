@@ -4,11 +4,15 @@ import { createGitHubSponsors } from './license/github-obsidian';
 import { SPONSORS, bindPro, resetPro } from './pro';
 import { AuditSettingTab } from './settings';
 import { auditProfile, extractSettings, type Profile, type Report, type Schema } from './audit';
+import { setupHello } from './hello/index';
+import WHATS_NEW from './whats-new.json';
 
 export default class BibliographyPathAuditPlugin extends Plugin {
  pro: SponsorsManager | null = null;
  private modals = new Set<AuditModal>();
  onload(): void {
+  // First: "What's new" reads its state before the settings load (packages/hello). It does not wait.
+  setupHello(this, WHATS_NEW);
   const pro = createGitHubSponsors(this.app, this.manifest.id, SPONSORS, this);
   pro.init(); this.pro = pro; bindPro(pro);
   this.addSettingTab(new AuditSettingTab(this.app, this));

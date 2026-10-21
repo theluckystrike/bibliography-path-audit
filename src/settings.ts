@@ -2,10 +2,16 @@ import { PluginSettingTab, type App, type SettingDefinitionItem } from 'obsidian
 import { fillAccountSetting } from './license/github-obsidian';
 import { PRO_UI } from './pro';
 import type BibliographyPathAuditPlugin from './main';
+import { helloSettingItems } from './hello/settings';
 
 export class AuditSettingTab extends PluginSettingTab {
  constructor(app: App, private readonly owner: BibliographyPathAuditPlugin) { super(app, owner); }
  getSettingDefinitions(): SettingDefinitionItem[] {
+  // The product rows, then the "More from NoteMods" card (packages/hello).
+  return [...this.productSettingDefinitions(), ...helloSettingItems()];
+ }
+
+ productSettingDefinitions(): SettingDefinitionItem[] {
   return [
    { name: 'Read-only path audit', render: setting => {
     setting.setDesc('Choose a citation tool and check one local bibliography profile.').addButton(button => button.setButtonText('Open audit').onClick(() => { this.owner.openAudit(); }));
