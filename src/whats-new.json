@@ -1,7 +1,7 @@
 {
 	"id": "bibliography-path-audit",
 	"name": "Bibliography Path Audit",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"changes": [
 		"The Pro notice of Bibliography Path Audit now says that one payment turns on Pro in every NoteMods plugin.",
 		"The package file now names the public repository of the plugin."
